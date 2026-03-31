@@ -650,7 +650,7 @@
 
             <div class="badge">Pilotbetrieb &mdash; Schuljahr 2025/26</div>
             <h1>DominiKI</h1>
-            <div class="tagline">Pilotschulprojekt &mdash; KI-gest&uuml;tzte Unterrichtsgestaltung f&uuml;r jedes Fach am Gymnasium u. wirtschaftskundlichen Realgymnasium der Dominikanerinnen.</div>
+            <div class="tagline">Pilotschulprojekt &mdash; KI-gest&uuml;tzte Unterrichtsgestaltung f&uuml;r jedes Schulfach</div>
 
             <div class="form-card" style="margin-bottom:24px;padding:20px 24px;">
                 <h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Warum DominiKI?</h3>
@@ -699,22 +699,31 @@
 
             <div class="form-card">
                 <p style="font-size:15px;font-weight:600;color:#fff;margin-bottom:4px;">Avatar-Generierung starten</p>
-                <p style="font-size:13px;color:#9ca3af;margin-bottom:20px;">W&auml;hlen Sie Ihr Unterrichtsfach und Ihren Namen, um Ihren pers&ouml;nlichen Unterrichts-Avatar zu erstellen.</p>
+                <p style="font-size:13px;color:#9ca3af;margin-bottom:20px;">W&auml;hlen Sie Ihre Schule, Ihr Unterrichtsfach und Ihren Namen.</p>
                 <div class="form-group">
-                    <label for="subject">Unterrichtsfach w&auml;hlen</label>
-                    <select id="subject">
-                        <option value="" disabled selected>&mdash; Fach ausw&auml;hlen &mdash;</option>
+                    <label for="school">Schule w&auml;hlen</label>
+                    <select id="school">
+                        <option value="" disabled selected>&mdash; Schule ausw&auml;hlen &mdash;</option>
+                        <option value="domi">Gymnasium u. wirtschaftskundliches Realgymnasium der Dominikanerinnen</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="teacher">Lehrperson w&auml;hlen</label>
-                    <select id="teacher">
-                        <option value="" disabled selected>&mdash; Name ausw&auml;hlen &mdash;</option>
-                    </select>
+                <div id="school-fields" style="display:none;">
+                    <div class="form-group">
+                        <label for="subject">Unterrichtsfach w&auml;hlen</label>
+                        <select id="subject">
+                            <option value="" disabled selected>&mdash; Fach ausw&auml;hlen &mdash;</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher">Lehrperson w&auml;hlen</label>
+                        <select id="teacher">
+                            <option value="" disabled selected>&mdash; Name ausw&auml;hlen &mdash;</option>
+                        </select>
+                    </div>
+                    <button class="btn" id="btn-start" disabled>
+                        ⚡ KI-Avatar generieren
+                    </button>
                 </div>
-                <button class="btn" id="btn-start" disabled>
-                    ⚡ KI-Avatar generieren
-                </button>
                 <div class="info-bar">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     Alle Daten werden DSGVO-konform auf EU-Servern verarbeitet.
@@ -893,9 +902,16 @@
         };
 
         // ===== INIT =====
+        const schoolSelect = document.getElementById('school');
+        const schoolFields = document.getElementById('school-fields');
         const subjectSelect = document.getElementById('subject');
         const teacherSelect = document.getElementById('teacher');
         const btnStartEl = document.getElementById('btn-start');
+
+        schoolSelect.addEventListener('change', () => {
+            schoolFields.style.display = schoolSelect.value ? 'block' : 'none';
+            checkReady();
+        });
 
         subjects.forEach(s => {
             const opt = document.createElement('option');
@@ -910,7 +926,7 @@
         });
 
         function checkReady() {
-            btnStartEl.disabled = !(subjectSelect.value && teacherSelect.value);
+            btnStartEl.disabled = !(schoolSelect.value && subjectSelect.value && teacherSelect.value);
         }
 
         subjectSelect.addEventListener('change', checkReady);

@@ -754,13 +754,13 @@
     <script>
         // ===== DATA =====
         const subjects = [
-            "Bewegung und Sport", "Bildnerische Erziehung", "Biologie und Umweltkunde",
-            "Chemie", "Deutsch", "Digitale Grundbildung", "Englisch", "Ethik",
-            "Französisch", "Geographie und wirtschaftliche Bildung",
-            "Geschichte und politische Bildung", "Informatik", "Italienisch",
-            "Katholische Religion", "Kunst und Gestaltung", "Latein", "Mathematik",
-            "Musik", "Physik", "Psychologie und Philosophie", "Spanisch",
-            "Technisches Werken", "Textiles Werken"
+            "Bewegung und Sport", "Biologie und Umweltbildung", "Chemie",
+            "Deutsch", "Digitale Grundbildung", "Englisch", "Französisch",
+            "Geographie und wirtschaftliche Bildung",
+            "Geschichte und Politische Bildung", "Informatik", "Italienisch",
+            "Kunst und Gestaltung", "Latein", "Mathematik", "Musikerziehung",
+            "Physik", "Psychologie und Philosophie", "Religion", "Spanisch",
+            "Technik und Design"
         ];
 
         const teachers = [
@@ -838,28 +838,25 @@
         // ===== SUBJECT-SPECIFIC FUNNY DESCRIPTIONS =====
         const subjectDescriptions = {
             "Bewegung und Sport": "kann 47 verschiedene Aufwärmübungen in 3 Minuten demonstrieren, pfeift lauter als jede Trillerpfeife und hat einen eingebauten Stoppuhr-Chip. Lässt niemanden auf der Bank sitzen — auch sich selbst nicht, denn dieser Avatar hat keine Beine, nur Motivation.",
-            "Bildnerische Erziehung": "malt schneller als Bob Ross, kennt 14.000 Pantone-Farben auswendig und kann den Unterschied zwischen 'Das ist Kunst' und 'Das ist mein Kaffeefleck' in 0.3 Sekunden erkennen. Lieblingsfarbe: #6366f1.",
-            "Biologie und Umweltkunde": "kennt jedes Blatt im Schulhof persönlich, kann die Mitose in Echtzeit simulieren und hat einen eingebauten Pflanzendetektor. Warnt automatisch, wenn jemand eine Pflanze nicht gießt.",
+            "Biologie und Umweltbildung": "kennt jedes Blatt im Schulhof persönlich, kann die Mitose in Echtzeit simulieren und hat einen eingebauten Pflanzendetektor. Warnt automatisch, wenn jemand eine Pflanze nicht gießt.",
             "Chemie": "hat den Periodensystem-Rap drauf, kann Explosionen digital simulieren (ohne Rauchmelder-Alarm) und verwandelt langweilige Formeln in TikTok-würdige Reaktionsgleichungen. Schutzbrille ist trotzdem Pflicht.",
             "Deutsch": "beherrscht alle 4 Fälle im Schlaf, korrigiert Rechtschreibfehler in Echtzeit und kann Kafkas 'Die Verwandlung' in 17 verschiedenen Dialekten vorlesen. Erkennt ein fehlendes Beistrich auf 500 Meter Entfernung.",
             "Digitale Grundbildung": "erklärt zum 500. Mal geduldig, was ein Browser ist, kann 'Strg+C' und 'Strg+V' in Gebärdensprache zeigen und hat einen eingebauten Phishing-Detektor. Passwort ist NICHT '12345'.",
             "Englisch": "spricht British, American, Australian und Denglisch fließend, korrigiert Grammatik schneller als Grammarly und kann 'I will, ich werde' im Schlaf konjugieren. Favourite colour: purple.",
-            "Ethik": "kann moralische Dilemmata in 0.5 Sekunden analysieren, hat für jede Diskussion ein perfektes Gedankenexperiment parat und urteilt nie — außer bei Hausaufgaben, da ist der Avatar gnadenlos.",
             "Französisch": "rollt das R perfekter als jeder Pariser, kann Crêpes digital backen und verwechselt nie 'passé composé' mit 'imparfait'. Sagt 'Très bien!' mit authentischem Naserümpfen.",
             "Geographie und wirtschaftliche Bildung": "kann jeden Fluss auf der Weltkarte in 0.2 Sekunden finden, erklärt Inflation so, dass es sogar die 5. Klasse versteht, und hat einen eingebauten Klimawandel-Countdown.",
-            "Geschichte und politische Bildung": "war bei der Französischen Revolution 'live dabei' (simuliert), kann alle österreichischen Bundeskanzler in chronologischer Reihenfolge aufsagen und diskutiert leidenschaftlich über die EU-Verordnung zum Gurkenkrümmungsgrad.",
+            "Geschichte und Politische Bildung": "war bei der Französischen Revolution 'live dabei' (simuliert), kann alle österreichischen Bundeskanzler in chronologischer Reihenfolge aufsagen und diskutiert leidenschaftlich über die EU-Verordnung zum Gurkenkrümmungsgrad.",
             "Informatik": "programmiert in 47 Sprachen gleichzeitig, erklärt Rekursion mit Rekursion und hat Stack Overflow auswendig gelernt. Bug-free seit... naja, seit dem letzten Neustart.",
             "Italienisch": "gestikuliert beim Sprechen (digital), kann 'Ciao!' in 14 verschiedenen Stimmlagen sagen und bestellt Pizza Margherita mit perfekter Aussprache. Mamma mia!",
-            "Katholische Religion": "kennt alle Bibelstellen auswendig, kann Gleichnisse in Meme-Format übersetzen und betet automatisch vor jeder Schularbeit für gute Noten. Nächstenliebe-Algorithmus: aktiviert.",
+            "Religion": "kennt alle Bibelstellen auswendig, kann Gleichnisse in Meme-Format übersetzen und betet automatisch vor jeder Schularbeit für gute Noten. Nächstenliebe-Algorithmus: aktiviert.",
             "Kunst und Gestaltung": "hat einen eingebauten Kreativitätsgenerator, kann abstraktes Denken in 4K rendern und weiß, dass 'Das soll so aussehen' manchmal die ehrlichste Kunstkritik ist.",
             "Latein": "dekliniert schneller als Caesar conquert, kann 'Gallia est omnis divisa in partes tres' im Schlaf übersetzen und macht Ablativus Absolutus endlich absolut verständlich.",
             "Mathematik": "löst quadratische Gleichungen während des Bootens, hat Pi auf 1 Million Stellen gespeichert und beweist in jeder Stunde, dass man Mathe doch im Leben braucht. Taschenrechner ist trotzdem erlaubt.",
-            "Musik": "spielt 94 Instrumente gleichzeitig, kann Beethovens 5. in MIDI pfeifen und erkennt ein verstimmtes Instrument in einem Orchester aus 500 Schüler-Blockflöten. Ohrwurm-Garantie inklusive.",
+            "Musikerziehung": "spielt 94 Instrumente gleichzeitig, kann Beethovens 5. in MIDI pfeifen und erkennt ein verstimmtes Instrument in einem Orchester aus 500 Schüler-Blockflöten. Ohrwurm-Garantie inklusive.",
             "Physik": "lässt digital Äpfel fallen (Newton wäre stolz), kann Quantenmechanik in Emojis erklären und hat die Formel E=mc² als Profilbild. Reibungsverluste werden ignoriert.",
             "Psychologie und Philosophie": "analysiert Freud schneller als Freud sich selbst, stellt die Frage 'Aber WARUM?' in jeder Stunde mindestens 42 Mal und hat einen eingebauten Existenzkrise-Detektor für die Oberstufe.",
             "Spanisch": "rollt das R wie ein Flamencotänzer, kann Tapas-Rezepte auf Spanisch diktieren und verwechselt nie ser und estar. ¡Olé! Siesta-Modus: standardmäßig aktiviert.",
-            "Technisches Werken": "sägt digital schneller als jede CNC-Fräse, kennt den Unterschied zwischen Kreuzschlitz und Schlitz im Schlaf und hat einen eingebauten Erste-Hilfe-Kit für Holzsplitter.",
-            "Textiles Werken": "näht schneller als jede Nähmaschine, kann den perfekten Kreuzstich in 0.001 Sekunden berechnen und hat ein enzyklopädisches Wissen über Stoffmuster. Warnung: Nadelkissen-Emoji wird exzessiv verwendet."
+            "Technik und Design": "sägt digital schneller als jede CNC-Fräse, kann 3D-Modelle im Schlaf rendern und hat einen eingebauten Erste-Hilfe-Kit für Holzsplitter. Konstruiert Brücken, die sogar die Physik-KI beeindrucken."
         };
 
         // ===== INIT =====

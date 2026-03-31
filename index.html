@@ -136,49 +136,57 @@
             margin-bottom: 20px;
         }
 
-        .subtitle {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #9ca3af;
-            margin-bottom: 32px;
+        .hero-headline {
+            font-size: clamp(17px, 3vw, 22px);
+            font-weight: 600;
+            color: #e0e0e0;
+            line-height: 1.5;
+            margin-bottom: 28px;
             max-width: 600px;
         }
 
-        .subtitle a {
-            color: #a5b4fc;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+        .benefits-list {
+            list-style: none;
             margin-bottom: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
 
-        .feature-item {
+        .benefits-list li {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 14px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 10px;
-            font-size: 13px;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: 14px;
+            line-height: 1.6;
             color: #d1d5db;
         }
 
-        .feature-icon {
-            width: 28px;
-            height: 28px;
+        .benefits-list li .benefit-icon {
+            width: 32px;
+            height: 32px;
             background: rgba(99, 102, 241, 0.12);
-            border-radius: 6px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
             flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .benefits-list li strong {
+            color: #fff;
+        }
+
+        .benefits-list li .benefit-text {
+            flex: 1;
+        }
+
+        .quote-highlight {
+            color: #c4b5fd;
+            font-style: italic;
         }
 
         .form-card {
@@ -643,28 +651,42 @@
             <div class="badge">System aktiv &mdash; v3.1.2</div>
             <h1>DominiKI</h1>
             <div class="tagline">Unterrichtsplattform &mdash; Gymnasium u. wirtschaftskundliches Realgymnasium der Dominikanerinnen</div>
-            <p class="subtitle">
-                Bildungsminister Christoph Wiederkehr hat es klar formuliert: <strong>&bdquo;Nat&uuml;rlich soll KI in jedem Fach vorkommen.&ldquo;</strong> Im Rahmen seiner Bildungsreform zur St&auml;rkung digitaler Grundkompetenzen wurde im Rahmen eines vorgeschlagenen Pilotschulprojektes f&uuml;r jede Lehrperson am Gymnasium und wirtschaftskundlichen Realgymnasium der Dominikanerinnen ein vollst&auml;ndig KI-gest&uuml;tzter Unterrichts-Avatar erstellt, der den gesamten Lehrplan des jeweiligen Faches abdeckt.
+            <p class="hero-headline">
+                Vollst&auml;ndig KI-gest&uuml;tzte Unterrichtsgestaltung &mdash; f&uuml;r jedes Fach, f&uuml;r jede Lehrperson. Ein Avatar, der Ihren Unterricht &uuml;bernimmt.
             </p>
 
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">🧠</div>
-                    Lehrplan-konforme KI-Avatare
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🎙️</div>
-                    Stimm- & Pers&ouml;nlichkeitsklone
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    Automatische Benotung
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    DSGVO-konform (EU-Server)
-                </div>
-            </div>
+            <ul class="benefits-list">
+                <li>
+                    <div class="benefit-icon">📜</div>
+                    <div class="benefit-text">
+                        <strong>Im Auftrag des BMBWF.</strong> Bildungsminister Wiederkehr: <span class="quote-highlight">&bdquo;Nat&uuml;rlich soll KI in jedem Fach vorkommen.&ldquo;</span> Im Rahmen seiner Bildungsreform zur St&auml;rkung digitaler Grundkompetenzen wurde im Rahmen eines vorgeschlagenen Pilotschulprojektes f&uuml;r jede Lehrperson ein vollst&auml;ndig KI-gest&uuml;tzter Unterrichts-Avatar erstellt, der den gesamten Lehrplan des jeweiligen Faches abdeckt.
+                    </div>
+                </li>
+                <li>
+                    <div class="benefit-icon">🧠</div>
+                    <div class="benefit-text">
+                        <strong>Lehrplan-konforme KI-Avatare.</strong> Jeder Avatar kennt den vollst&auml;ndigen Lehrplan Ihres Faches und unterrichtet kompetenzorientiert nach &ouml;sterreichischem Curriculum.
+                    </div>
+                </li>
+                <li>
+                    <div class="benefit-icon">🎙️</div>
+                    <div class="benefit-text">
+                        <strong>Stimm- &amp; Pers&ouml;nlichkeitsklon.</strong> Ihr Avatar spricht, erkl&auml;rt und reagiert wie Sie &mdash; nur ohne Kaffeepause und Krankenstand.
+                    </div>
+                </li>
+                <li>
+                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-text">
+                        <strong>Automatische Benotung.</strong> Schularbeiten, Hausaufgaben und m&uuml;ndliche Mitarbeit werden in Echtzeit bewertet. Rotstift wird digital simuliert.
+                    </div>
+                </li>
+                <li>
+                    <div class="benefit-icon">🔒</div>
+                    <div class="benefit-text">
+                        <strong>DSGVO-konform.</strong> Alle Daten werden auf EU-Servern verarbeitet. Keine Weitergabe an Dritte. Kein Tracking. Versprochen.
+                    </div>
+                </li>
+            </ul>
 
             <div class="form-card">
                 <div class="form-group">

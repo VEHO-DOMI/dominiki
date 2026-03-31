@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domi AI Lehrplattform — Gymnasium der Dominikanerinnen</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-glow-1 {
+            top: -200px;
+            right: -100px;
+            background: #6366f1;
+        }
+
+        .bg-glow-2 {
+            bottom: -200px;
+            left: -100px;
+            background: #8b5cf6;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Header */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: #a5b4fc;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 100px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #9ca3af;
+            margin-bottom: 36px;
+            max-width: 560px;
+        }
+
+        .subtitle strong {
+            color: #c4b5fd;
+        }
+
+        /* Form */
+        .form-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%239ca3af' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            transition: border-color 0.2s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .info-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 12px 16px;
+            background: rgba(34, 197, 94, 0.06);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #86efac;
+        }
+
+        .info-bar svg {
+            flex-shrink: 0;
+        }
+
+        /* ===== PROGRESS SCREEN ===== */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-section {
+            text-align: center;
+        }
+
+        .avatar-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: avatar-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes avatar-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
+        }
+
+        .avatar-placeholder svg {
+            width: 48px;
+            height: 48px;
+            fill: white;
+            opacity: 0.9;
+        }
+
+        .spinner-ring {
+            position: absolute;
+            inset: -8px;
+            border: 3px solid transparent;
+            border-top-color: #a5b4fc;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .progress-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .progress-teacher {
+            font-size: 15px;
+            color: #a5b4fc;
+            margin-bottom: 28px;
+        }
+
+        .progress-bar-container {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 100px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
+            border-radius: 100px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 30px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+            border-radius: 100px;
+        }
+
+        .progress-percent {
+            font-size: 14px;
+            font-weight: 600;
+            color: #a5b4fc;
+            margin-bottom: 20px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .progress-status {
+            font-size: 14px;
+            color: #9ca3af;
+            min-height: 24px;
+            transition: opacity 0.3s;
+        }
+
+        .progress-status.fade {
+            opacity: 0;
+        }
+
+        .terminal-log {
+            margin-top: 28px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: left;
+            max-height: 160px;
+            overflow-y: auto;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+        }
+
+        .terminal-log .log-line {
+            color: #6b7280;
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: logAppear 0.3s forwards;
+        }
+
+        .terminal-log .log-line.success {
+            color: #22c55e;
+        }
+
+        .terminal-log .log-line.warning {
+            color: #f59e0b;
+        }
+
+        @keyframes logAppear {
+            to { opacity: 1; }
+        }
+
+        /* ===== REVEAL SCREEN ===== */
+        .reveal-section {
+            text-align: center;
+        }
+
+        .reveal-title {
+            font-size: clamp(40px, 10vw, 72px);
+            font-weight: 800;
+            margin-bottom: 24px;
+            animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .reveal-message {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #d1d5db;
+            margin-bottom: 12px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .reveal-submessage {
+            font-size: 15px;
+            color: #9ca3af;
+            margin-bottom: 32px;
+        }
+
+        .reveal-emoji {
+            font-size: 64px;
+            margin-bottom: 24px;
+            animation: wiggle 0.5s ease-in-out 0.8s;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .reveal-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 20px;
+        }
+
+        .reveal-card p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .credit {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                top: 110vh;
+                transform: rotate(720deg);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px;
+            text-align: center;
+            font-size: 11px;
+            color: #374151;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="container">
+        <!-- SCREEN 1: Landing -->
+        <div id="screen-landing" class="screen active">
+            <div class="badge">System aktiv — v3.1.2</div>
+            <h1>Domi AI Lehrplattform</h1>
+            <p class="subtitle">
+                Gemäß der <strong>Verordnung des BMBWF zur Integration von KI in den Schulunterricht</strong> (GZ 2025-0.734.210) wurde für jede Lehrperson ein vollständig KI-gestützter Unterrichts-Avatar erstellt, der den gesamten Lehrplan Ihres Faches abdeckt.
+            </p>
+
+            <div class="form-card">
+                <div class="form-group">
+                    <label for="subject">Unterrichtsfach wählen</label>
+                    <select id="subject">
+                        <option value="" disabled selected>— Fach auswählen —</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="teacher">Lehrperson wählen</label>
+                    <select id="teacher">
+                        <option value="" disabled selected>— Name auswählen —</option>
+                    </select>
+                </div>
+                <button class="btn" id="btn-start" disabled>
+                    ⚡ KI-Avatar generieren
+                </button>
+                <div class="info-bar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Alle Daten werden DSGVO-konform auf EU-Servern verarbeitet.
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: Progress -->
+        <div id="screen-progress" class="screen">
+            <div class="progress-section">
+                <div class="avatar-placeholder">
+                    <div class="spinner-ring"></div>
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="progress-title">KI-Avatar wird erstellt</div>
+                <div class="progress-teacher" id="progress-teacher"></div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+                <div class="progress-percent" id="progress-percent">0%</div>
+                <div class="progress-status" id="progress-status">Initialisierung...</div>
+                <div class="terminal-log" id="terminal-log"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: Reveal -->
+        <div id="screen-reveal" class="screen">
+            <div class="reveal-section">
+                <div class="reveal-emoji">😂</div>
+                <div class="reveal-title">APRIL, APRIL!</div>
+                <p class="reveal-message">
+                    Keine Sorge — so weit ist es noch nicht!<br>
+                    Eure Jobs sind <strong>(vorerst)</strong> sicher. 😄
+                </p>
+                <p class="reveal-submessage">
+                    Frohen 1. April vom AI-Koordinator! 🎉
+                </p>
+                <div class="reveal-card">
+                    <p>
+                        KI kann vieles — aber euch als Lehrpersonen ersetzen?
+                        Nicht heute, und auch nicht morgen.
+                        Schöne Osterferien und bis bald! ❤️
+                    </p>
+                </div>
+                <div class="credit">Domi AI Lehrplattform v3.1.2 — Powered by Imagination™</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">© 2026 Gymnasium der Dominikanerinnen — AI Integration Unit</div>
+
+    <script>
+        // ===== DATA =====
+        const subjects = [
+            "Bewegung und Sport",
+            "Bildnerische Erziehung",
+            "Biologie und Umweltkunde",
+            "Chemie",
+            "Deutsch",
+            "Digitale Grundbildung",
+            "Englisch",
+            "Ethik",
+            "Französisch",
+            "Geographie und wirtschaftliche Bildung",
+            "Geschichte und politische Bildung",
+            "Informatik",
+            "Italienisch",
+            "Katholische Religion",
+            "Kunst und Gestaltung",
+            "Latein",
+            "Mathematik",
+            "Musik",
+            "Physik",
+            "Psychologie und Philosophie",
+            "Spanisch",
+            "Technisches Werken",
+            "Textiles Werken"
+        ];
+
+        const teachers = [
+            "ADAMCIK-PREUSSER Helga",
+            "BACHL Katja Hedwig",
+            "BEDNARZ Nicole",
+            "BOCK Bianca",
+            "BYSTRICKY Cornelia",
+            "CHYSKA Mario",
+            "FASCHINGER Valentin",
+            "FORSTER Iris",
+            "HAMMER Martin",
+            "HEBENSTREIT Andrea",
+            "HIRNSCHALL Hermann",
+            "HÖLBLING Michael",
+            "HORVATH Christian Stefan",
+            "INZINGER Stephanie",
+            "KÖLLERER Peter",
+            "KOMAN Lorenz",
+            "LEDERER Ulrike",
+            "LEITNER Michaela",
+            "LEUTHNER Theresa",
+            "MAK Eva-Maria",
+            "MAURUS Pia",
+            "NEUSES Christina",
+            "ORSOLIC Marianne",
+            "PAULOVICS Veronica",
+            "PITSCHEIDER Marisa",
+            "PLATZER Regina",
+            "PREISSLER Michelle",
+            "REICHSTÄDTER Sabrina",
+            "REITMANN Hartwig",
+            "RODRIGUEZ Laura",
+            "ROITINGER Elisabeth",
+            "ROSIGKEIT Leonhard",
+            "SCHEIKL-ANDRITSCH Elisabeth",
+            "SCHOISWOHL Stefan",
+            "SEMEN Ellen",
+            "SOMMER-RIEF Eike",
+            "STARNBERGER Marion",
+            "STEINDL Florian",
+            "STÖGER-HEINISSER Verena",
+            "STOISER Hanna",
+            "STRAHSER Eva",
+            "STREBL Martin",
+            "SZECSENYI Stefan",
+            "TAFERNER Lorenz",
+            "TEICHMANN Christa",
+            "TIEFENBÖCK Ulrike",
+            "TONEV Kosta",
+            "TRANDAFIR Valentin-Radu",
+            "UEBE Imogen",
+            "VEHABOVIC Orhan",
+            "VESTJENS Pieter",
+            "WALTER Nora",
+            "WIDERIN Claudia",
+            "WIESEGGER Verena",
+            "WILDOM Anne",
+            "WURZER Karin"
+        ];
+
+        // ===== PROGRESS MESSAGES =====
+        const progressSteps = [
+            { pct: 3, msg: "Neuronales Netzwerk wird initialisiert...", log: "[INIT] Loading DomiAI Core v3.1.2..." },
+            { pct: 7, msg: "Verbindung zum BMBWF-Server wird hergestellt...", log: "[NET] Connecting to bmbwf-ai.gv.at:443... OK" },
+            { pct: 12, msg: "Lehrplandaten werden synchronisiert...", log: "[SYNC] Curriculum data: 2.847 learning objectives loaded" },
+            { pct: 18, msg: "Gesichtszüge werden analysiert...", log: "[CV] FaceNet model loaded, scanning facial features..." },
+            { pct: 24, msg: "Stimmprofil wird kalibriert...", log: "[AUDIO] Voice cloning: pitch=214Hz, timbre=warm" },
+            { pct: 30, msg: "Pädagogische Kompetenz wird hochgeladen...", log: "[AI] Uploading 15 years of pedagogical expertise..." },
+            { pct: 35, msg: "Lehrergehalt wird an KI überwiesen...", log: "[FIN] Salary redirect: AT89 3700 0000 0000 1234... 😏" },
+            { pct: 42, msg: "Kaffeepausen werden eingeplant...", log: "[SCHED] Coffee break optimizer: 3.7 cups/day optimal" },
+            { pct: 48, msg: "Klassenbuch wird automatisch ausgefüllt...", log: "[DB] Auto-filling Klassenbuch... 847 entries generated" },
+            { pct: 53, msg: "Supplierstunden werden eliminiert...", log: "[OPT] Supply teacher slots: eliminated. You're welcome." },
+            { pct: 58, msg: "Konferenzen werden auf 2 Minuten gekürzt...", log: "[MEET] Conference optimizer: 90min → 2min. Efficiency +4400%" },
+            { pct: 63, msg: "Elternsprechtag wird durch Chatbot ersetzt...", log: "[BOT] ParentBot™ deployed: 'Ihr Kind ist sehr brav.'" },
+            { pct: 68, msg: "Schularbeiten werden automatisch korrigiert...", log: "[GRADE] AutoGrade™: red pen simulation at 99.7% accuracy" },
+            { pct: 73, msg: "Work-Life-Balance wird optimiert...", log: "[LIFE] Setting work hours: 0h/week. Balance achieved. ✓" },
+            { pct: 78, msg: "Motivationsalgorithmus wird kalibriert...", log: "[MOT] Student motivation engine: bribery module loaded" },
+            { pct: 83, msg: "Avatar-Rendering läuft...", log: "[GPU] Rendering avatar... VRAM: 23.4GB/24GB" },
+            { pct: 88, msg: "Persönlichkeit wird kopiert...", log: "[PSY] Personality clone: sarcasm=87%, patience=12%" },
+            { pct: 92, msg: "Letzte Qualitätsprüfung...", log: "[QA] Running 2.341 unit tests... all passed ✓" },
+            { pct: 96, msg: "Avatar wird in die Cloud deployt...", log: "[DEPLOY] Uploading to eu-west-1.domi-ai.cloud..." },
+            { pct: 100, msg: "Abgeschlossen!", log: "[DONE] Avatar ready. Teacher can go home now. 🏠" }
+        ];
+
+        // ===== INIT =====
+        const subjectSelect = document.getElementById('subject');
+        const teacherSelect = document.getElementById('teacher');
+        const btnStart = document.getElementById('btn-start');
+
+        subjects.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s;
+            opt.textContent = s;
+            subjectSelect.appendChild(opt);
+        });
+
+        teachers.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = t;
+            teacherSelect.appendChild(opt);
+        });
+
+        function checkReady() {
+            btnStart.disabled = !(subjectSelect.value && teacherSelect.value);
+        }
+
+        subjectSelect.addEventListener('change', checkReady);
+        teacherSelect.addEventListener('change', checkReady);
+
+        // ===== START =====
+        btnStart.addEventListener('click', () => {
+            const subject = subjectSelect.value;
+            const teacher = teacherSelect.value;
+
+            document.getElementById('screen-landing').classList.remove('active');
+            const progressScreen = document.getElementById('screen-progress');
+            progressScreen.classList.add('active');
+
+            document.getElementById('progress-teacher').textContent =
+                `${teacher} — ${subject}`;
+
+            runProgress();
+        });
+
+        // ===== PROGRESS ANIMATION =====
+        function runProgress() {
+            const bar = document.getElementById('progress-bar');
+            const pctEl = document.getElementById('progress-percent');
+            const statusEl = document.getElementById('progress-status');
+            const logEl = document.getElementById('terminal-log');
+
+            let stepIndex = 0;
+
+            function nextStep() {
+                if (stepIndex >= progressSteps.length) {
+                    setTimeout(showReveal, 800);
+                    return;
+                }
+
+                const step = progressSteps[stepIndex];
+
+                // Animate progress bar
+                bar.style.width = step.pct + '%';
+                pctEl.textContent = step.pct + '%';
+
+                // Fade status message
+                statusEl.classList.add('fade');
+                setTimeout(() => {
+                    statusEl.textContent = step.msg;
+                    statusEl.classList.remove('fade');
+                }, 150);
+
+                // Add terminal log
+                const line = document.createElement('div');
+                line.className = 'log-line' + (step.pct === 100 ? ' success' : step.pct === 35 ? ' warning' : '');
+                line.textContent = step.log;
+                logEl.appendChild(line);
+                logEl.scrollTop = logEl.scrollHeight;
+
+                stepIndex++;
+
+                // Random delay between 400-700ms for realism
+                const delay = 400 + Math.random() * 300;
+                setTimeout(nextStep, delay);
+            }
+
+            setTimeout(nextStep, 600);
+        }
+
+        // ===== REVEAL =====
+        function showReveal() {
+            document.getElementById('screen-progress').classList.remove('active');
+            document.getElementById('screen-reveal').classList.add('active');
+            launchConfetti();
+        }
+
+        // ===== CONFETTI =====
+        function launchConfetti() {
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+
+            const colors = ['#6366f1', '#8b5cf6', '#a78bfa', '#f59e0b', '#22c55e', '#ef4444', '#ec4899', '#06b6d4'];
+
+            for (let i = 0; i < 120; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (6 + Math.random() * 8) + 'px';
+                    confetti.style.height = (6 + Math.random() * 8) + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
+                    confetti.style.animationDelay = '0s';
+                    container.appendChild(confetti);
+                }, Math.random() * 1500);
+            }
+
+            setTimeout(() => container.remove(), 6000);
+        }
+    </script>
+</body>
+</html>

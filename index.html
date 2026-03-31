@@ -1022,26 +1022,41 @@
             document.getElementById('summary-name').textContent = `KI-Avatar: ${selectedTeacher}`;
             document.getElementById('summary-subject').textContent = selectedSubject;
 
-            // Generate fun stats
+            // Generate fun stats from randomized pool
+            const statPool = [
+                { val: () => (Math.random() * 30 + 70).toFixed(1) + '%', label: 'Persönlichkeits-Match' },
+                { val: () => (Math.random() * 40 + 55).toFixed(1) + '%', label: 'Stimm-Klongenauigkeit' },
+                { val: () => Math.floor(Math.random() * 8000 + 2000), label: 'Lernziele geladen' },
+                { val: () => '∞', label: 'Geduld (synthetisch)' },
+                { val: () => (Math.random() * 4 + 0.5).toFixed(1) + ' s', label: 'Reaktionszeit auf Meldungen' },
+                { val: () => Math.floor(Math.random() * 200 + 50), label: 'Seufzer pro Stunde (max.)' },
+                { val: () => (Math.random() * 2 + 3).toFixed(1), label: 'Kaffeetassen/Tag (simuliert)' },
+                { val: () => Math.floor(Math.random() * 500 + 100) + ' TB', label: 'Fachwissen geladen' },
+                { val: () => Math.floor(Math.random() * 15 + 85) + '%', label: 'Sarkasmus-Level' },
+                { val: () => '0', label: 'Krankenstände/Jahr' },
+                { val: () => '24/7', label: 'Verfügbarkeit' },
+                { val: () => Math.floor(Math.random() * 30 + 5) + ' ms', label: 'Klassenbuch-Eintrag' },
+                { val: () => Math.floor(Math.random() * 300 + 100), label: 'Ausreden erkannt/Monat' },
+                { val: () => (Math.random() * 50 + 50).toFixed(0) + '%', label: 'Augenbrauen-Hochzieh-Accuracy' },
+                { val: () => '0 h', label: 'Burnout-Risiko' },
+                { val: () => Math.floor(Math.random() * 40 + 10) + ' dB', label: 'Max. Lautstärke (Psst!)' },
+                { val: () => Math.floor(Math.random() * 5000 + 1000), label: 'Eltern-Emails beantwortet' },
+                { val: () => (Math.random() * 2 + 0.1).toFixed(1) + ' min', label: 'Konferenz-Toleranz' },
+            ];
+            // Always include Persönlichkeits-Match and Geduld, pick 4 more random
+            const fixed = [statPool[0], statPool[3]];
+            const rest = statPool.slice(1).filter(s => s !== statPool[3]);
+            for (let i = rest.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [rest[i],rest[j]]=[rest[j],rest[i]]; }
+            const picked = [fixed[0], ...rest.slice(0, 4), fixed[1]];
+
             const stats = document.getElementById('summary-stats');
-            stats.innerHTML = `
+            stats.style.gridTemplateColumns = '1fr 1fr 1fr';
+            stats.innerHTML = picked.map(s => `
                 <div class="stat-item">
-                    <div class="stat-value">${(Math.random() * 50 + 50).toFixed(1)}%</div>
-                    <div class="stat-label">Persönlichkeits-Match</div>
+                    <div class="stat-value">${typeof s.val === 'function' ? s.val() : s.val}</div>
+                    <div class="stat-label">${s.label}</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value">${Math.floor(Math.random() * 8000 + 2000)}</div>
-                    <div class="stat-label">Lernziele geladen</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">${(Math.random() * 3 + 1).toFixed(1)} s</div>
-                    <div class="stat-label">Reaktionszeit</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">∞</div>
-                    <div class="stat-label">Geduld (synthetisch)</div>
-                </div>
-            `;
+            `).join('');
 
             // Subject-specific description
             const desc = subjectDescriptions[selectedSubject] ||
